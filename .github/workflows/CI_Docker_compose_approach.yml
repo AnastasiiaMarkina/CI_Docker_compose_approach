@@ -18,7 +18,7 @@ jobs:
           java-version: 17
 
       - name: Start DB
-        run: docker-compose up -d
+        run: docker compose up -d
 
       - name: Wait for DB
         run: |
@@ -34,4 +34,4 @@ jobs:
 
       - name: Stop containers
         if: always()
-        run: docker-compose down -v
+        run: docker compose down -v
