@@ -1,0 +1,37 @@
+name: Integration Tests
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Start DB
+        run: docker-compose up -d
+
+      - name: Wait for DB
+        run: |
+          until docker inspect \
+            --format='{{.State.Health.Status}}' test-db \
+            | grep healthy; do
+            echo "Waiting for DB..."
+            sleep 2
+          done
+
+      - name: Run tests
+        run: mvn test
+
+      - name: Stop containers
+        if: always()
+        run: docker-compose down -v
