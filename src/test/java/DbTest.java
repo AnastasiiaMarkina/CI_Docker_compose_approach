@@ -1,3 +1,4 @@
+import config.TestConfig;
 import org.junit.jupiter.api.Test;
 
 import java.sql.Connection;
@@ -8,11 +9,9 @@ import java.sql.Statement;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class DbTest {
-    private static final String URL =
-            "jdbc:postgresql://localhost:5432/testdb";
-
-    private static final String USER = "test";
-    private static final String PASS = "test";
+    private static final String URL = TestConfig.get("db.url");
+    private static final String USER = TestConfig.get("db.user");
+    private static final String PASS = TestConfig.get("db.password");
 
     @Test
     void shouldConnectToDbAndInsertData() throws Exception {
